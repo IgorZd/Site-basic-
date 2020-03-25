@@ -49,7 +49,7 @@ public function actionLogin()
             if($login_model->validate())
             {
                 Yii::$app->user->login($login_model->getUser());
-                return $this->redirect(['index']);
+                return $this->redirect(['admin/user']);
             }
         }
 

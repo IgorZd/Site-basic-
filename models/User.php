@@ -7,6 +7,25 @@ use yii\web\IdentityInterface;
 
 class User extends ActiveRecord implements IdentityInterface
 {
+    public static function tableName()
+    {
+        return 'user';
+    }
+    public function rules()
+    {
+        return [
+            [['id'], 'integer'],
+            [['email', 'password'], 'string', 'max' => 255],
+        ];
+    }
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'email' => 'Email',
+            'password' => 'Password'
+        ];
+    }
 
     public function setPassword($password)
     {
