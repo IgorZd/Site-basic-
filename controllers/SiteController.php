@@ -49,7 +49,13 @@ public function actionLogin()
             if($login_model->validate())
             {
                 Yii::$app->user->login($login_model->getUser());
-                return $this->redirect(['admin/user']);
+                if(Yii::$app->user->identity->isAdmin === 1) 
+                {
+                    return $this->redirect(['admin/user']);
+                } else {
+                    return $this->redirect(['index']);
+                }
+                
             }
         }
 
