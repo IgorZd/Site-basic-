@@ -10,12 +10,14 @@ class User extends ActiveRecord implements IdentityInterface
 
     public function setPassword($password)
     {
-        $this->password = password_hash($password, PASSWORD_DEFAULT);
+        // $this->password = password_hash($password, PASSWORD_DEFAULT);
+        $this->password = sha1($password);
     }
 
     public function validatePassword($password)
     {
-        return $this->password === password_hash($password, PASSWORD_DEFAULT);
+        // return $this->password === password_hash($password, PASSWORD_DEFAULT); 
+        return $this->password === sha1($password);
     }
 
     public static function findIdentity($id)
