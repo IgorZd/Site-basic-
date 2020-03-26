@@ -34,6 +34,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
+    <button class="btn btn-primary" onclick="location.href='server.php'">Export</button>
+    
 
 
 </div>
