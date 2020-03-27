@@ -109,6 +109,17 @@ class UserController extends Controller
         return $this->redirect(['index']);
     }
 
+    public function actionExportfile()
+    {
+        $searchModel = new UserSearch();
+        $dataProvider = $searchModel->search(\Yii::$app->request->queryParams);
+
+        return $this->render('export-file', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Finds the User model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
@@ -124,4 +135,5 @@ class UserController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
+
 }

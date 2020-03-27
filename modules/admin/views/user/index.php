@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use phpnt\exportFile\ExportFile;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\UserSearch */
@@ -18,7 +19,26 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= Html::a('Create User', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php echo ExportFile::widget([
+        'model' => 'app\models\UserSearch',
+        'title' => 'Users',
+        'queryParams' => Yii::$app->request->queryParams,
+        'getAll' => true,
+        'csvCharset' => 'Windows-1251',
+        'buttonClass' => 'btn btn-primary',
+        'blockClass' => 'pull-left',
+        'blockStyle' => 'padding: 5px',
+        'xls' => true,
+        'csv' => true,
+        'word' => true,
+        'html' => true,
+        'pdf' => true,
+        'xlsButtonName' => Yii::t('app', 'MS Excel'),
+        'csvButtonName' => Yii::t('app', 'CSV'),
+        'wordButtonName' => Yii::t('app', 'MS Word'),
+        'htmlButtonName' => Yii::t('app', 'HTML'),
+        'pdfButtonName' => Yii::t('app', 'PDF')
+    ]) ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -34,8 +54,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-    <button class="btn btn-primary" onclick="location.href='server.php'">Export</button>
-    
 
 
 </div>

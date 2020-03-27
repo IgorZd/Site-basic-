@@ -66,4 +66,17 @@ class UserSearch extends User
 
         return $dataProvider;
     }
+    public function exportFields()
+    {
+        return [
+            'id' => function ($model) {
+                /* @var $model User */
+                return $model->id;
+            },
+            'email',
+            'password',
+            'isAdmin'
+        ];
+    }
+
 }
