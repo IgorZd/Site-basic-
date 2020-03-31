@@ -5,13 +5,40 @@ use Yii;
 use yii\web\Controller;
 use app\models\Signup;
 use app\models\Login;
+use app\models\User;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use app\models\PasswordForm;
 
 class SiteController extends Controller
 {
+    public function behaviors(){
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'only' => ['logout'],
+                'rules' => [
+                    [
+                        'actions' => ['logout','changepassword'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
+            'verbs' => [
+                'class' => VerbFilter::className(),
+                'actions' => [
+                    'logout' => ['post'],
+                ],
+            ],
+        ];
+    }
+
 public function actionIndex()
 {
     return $this->render('index');
 }
+
 public function actionLogout()
 {
     if(!Yii::$app->user->isGuest)
@@ -20,6 +47,7 @@ public function actionLogout()
         return $this->redirect(['login']);
     }
 }
+
 public function actionSignup()
 {
     $model = new Signup();
@@ -33,6 +61,7 @@ public function actionSignup()
     }
     return $this->render('signup', ['model'=>$model]);
 }
+
 public function actionLogin()
     {
         if(!Yii::$app->user->isGuest)
@@ -60,5 +89,47 @@ public function actionLogin()
         }
 
         return $this->render('login',['login_model'=>$login_model]);
+    }
+
+public function actionChangepassword()
+ {
+        $model = new PasswordForm;
+        $modeluser = User::find()->where([
+            'email'=>Yii::$app->user->identity->email
+        ])->one();
+     
+        if($model->load(Yii::$app->request->post())){
+            if($model->validate()){
+                try{
+                    $modeluser->password = Yii::$app->security->generatePasswordHash($_POST['PasswordForm']['newpass']);
+                    if($modeluser->save()){
+                        Yii::$app->getSession()->setFlash(
+                            'success','Password changed'
+                        );
+                        return $this->redirect(['index']);
+                    }else{
+                        Yii::$app->getSession()->setFlash(
+                            'error','Password not changed'
+                        );
+                        return $this->redirect(['index']);
+                    }
+                }catch(Exception $e){
+                    Yii::$app->getSession()->setFlash(
+                        'error',"{$e->getMessage()}"
+                    );
+                    return $this->render('changepassword',[
+                        'model'=>$model
+                    ]);
+                }
+            }else{
+                return $this->render('changepassword',[
+                    'model'=>$model
+                ]);
+            }
+        }else{
+            return $this->render('changepassword',[
+                'model'=>$model
+            ]);
+        }
     }
 }
