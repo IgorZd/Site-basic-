@@ -26,7 +26,9 @@
                 'email'=>Yii::$app->user->identity->email
             ])->one();
             $password = $user->password;
-            if($password!=$this->oldpass)
+            $hash = Yii::$app->getSecurity()->generatePasswordHash($password);
+            $valid_password = Yii::$app->getSecurity()->validatePassword($password, $hash);
+            if($valid_password === false && $password!=$this->oldpass)
                 $this->addError($attribute,'Old password is incorrect');
         }
        
