@@ -8,9 +8,9 @@ $this->params['breadcrumbs'][] = $this->title;
 
 <div class="site-changepassword">
     <h1><?= Html::encode($this->title) ?></h1>
-   
+
     <p>Please fill out the following fields to change password :</p>
-   
+
     <?php $form = ActiveForm::begin([
         'id'=>'changepassword-form',
         'options'=>['class'=>'form-horizontal'],
@@ -24,15 +24,15 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $form->field($model,'oldpass',['inputOptions'=>[
             'placeholder'=>'Old Password'
         ]])->passwordInput() ?>
-       
+
         <?= $form->field($model,'newpass',['inputOptions'=>[
             'placeholder'=>'New Password'
         ]])->passwordInput() ?>
-       
+
         <?= $form->field($model,'repeatnewpass',['inputOptions'=>[
             'placeholder'=>'Repeat New Password'
         ]])->passwordInput() ?>
-       
+
         <div class="form-group">
             <div class="col-lg-offset-2 col-lg-11">
                 <?= Html::submitButton('Change password',[

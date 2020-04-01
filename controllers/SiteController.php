@@ -12,7 +12,8 @@ use app\models\PasswordForm;
 
 class SiteController extends Controller
 {
-    public function behaviors(){
+    public function behaviors()
+    {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -34,35 +35,35 @@ class SiteController extends Controller
         ];
     }
 
-public function actionIndex()
-{
-    return $this->render('index');
-}
-
-public function actionLogout()
-{
-    if(!Yii::$app->user->isGuest)
+    public function actionIndex()
     {
+     return $this->render('index');
+    }
+
+    public function actionLogout()
+    {
+     if(!Yii::$app->user->isGuest)
+     {
         Yii::$app->user->logout();
         return $this->redirect(['login']);
+     }
     }
-}
 
-public function actionSignup()
-{
-    $model = new Signup();
-    if(isset($_POST['Signup']))
+    public function actionSignup()
     {
+     $model = new Signup();
+     if(isset($_POST['Signup']))
+     {
         $model->attributes = Yii::$app->request->post('Signup');
         if($model->validate() && $model->signup())
         {
             return $this->goHome();
         }
+     }
+     return $this->render('signup', ['model'=>$model]);
     }
-    return $this->render('signup', ['model'=>$model]);
-}
 
-public function actionLogin()
+    public function actionLogin()
     {
         if(!Yii::$app->user->isGuest)
         {
@@ -90,14 +91,14 @@ public function actionLogin()
 
         return $this->render('login',['login_model'=>$login_model]);
     }
-
-public function actionChangepassword()
- {
+    
+    public function actionChangepassword()
+    {
         $model = new PasswordForm;
         $modeluser = User::find()->where([
             'email'=>Yii::$app->user->identity->email
         ])->one();
-     
+
         if($model->load(Yii::$app->request->post())){
             if($model->validate()){
                 try{

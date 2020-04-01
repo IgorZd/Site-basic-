@@ -27,15 +27,15 @@ class User extends ActiveRecord implements IdentityInterface
             'isAdmin' => 'IsAdmin'
         ];
     }
-
+    
     public function setPassword($password)
     {
-        $this->password = Yii::$app->getSecurity()->generatePasswordHash($password);
+      $this->password = Yii::$app->getSecurity()->generatePasswordHash($password);
     }
 
     public function validatePassword($password)
     {
-        return $this->password = Yii::$app->getSecurity()->generatePasswordHash($password);
+        return Yii::$app->getSecurity()->validatePassword($password, $this->password);
     }
 
     public static function findIdentity($id)
